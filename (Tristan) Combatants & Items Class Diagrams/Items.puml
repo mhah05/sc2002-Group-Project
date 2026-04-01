@@ -1,0 +1,38 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+interface Item {
+  + getName() : String
+  + use(user : Combatant) : void
+}
+
+abstract class AbstractItem {
+  - name : String
+  - consumed : boolean
+
+  + getName() : String
+  + isConsumed() : boolean
+  # markConsumed() : void
+}
+
+class Potion {
+  + use(user : Combatant) : void
+}
+
+class PowerStone {
+  + use(user : Combatant) : void
+}
+
+class SmokeBomb {
+  + use(user : Combatant) : void
+}
+
+' Relationships
+AbstractItem ..|> Item
+
+Potion --|> AbstractItem
+PowerStone --|> AbstractItem
+SmokeBomb --|> AbstractItem
+
+@enduml
