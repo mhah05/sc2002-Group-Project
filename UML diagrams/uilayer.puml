@@ -1,0 +1,25 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface GameUI {
+    +displayMessage(message : String) : void
+    +displayBattleStatus(combatants : List<Combatant>) : void
+    +getPlayerAction(actions : List<Action>) : Action
+    +getPlayerTarget(targets : List<Combatant>) : Combatant
+    +displayVictory(stats : GameStats) : void
+    +displayDefeat(stats : GameStats) : void
+}
+
+class ConsoleUI {
+    -scanner : Scanner
+    +displayMessage(message : String) : void
+    +displayBattleStatus(combatants : List<Combatant>) : void
+    +getPlayerAction(actions : List<Action>) : Action
+    +getPlayerTarget(targets : List<Combatant>) : Combatant
+    +displayVictory(stats : GameStats) : void
+    +displayDefeat(stats : GameStats) : void
+}
+
+GameUI <|.. ConsoleUI
+
+@enduml
