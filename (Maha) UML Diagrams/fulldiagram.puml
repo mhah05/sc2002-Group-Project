@@ -1,6 +1,27 @@
 @startuml
 skinparam classAttributeIconSize 0
 
+note as Legend
+  <b>Legend</b>
+  ----
+  Inheritance (extends)
+  Implementation (implements)
+  Dependency (uses)
+end note
+
+class ExtendsExample
+class ExtendsExample2
+ExtendsExample2 --|> ExtendsExample
+
+interface ImplementsExample
+class ImplementsExample2
+ImplementsExample <|.. ImplementsExample2
+
+class DependencyExample
+class DependencyExample2
+DependencyExample ..> DependencyExample2
+
+
 ' Combatant hierarchy
 abstract class Combatant {
     -name : String
