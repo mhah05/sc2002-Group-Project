@@ -1,0 +1,16 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class BattleEngine {
+    -player : Player
+    -enemies : List<Enemy>
+    -turnOrderStrategy : TurnOrderStrategy
+    -ui : GameUI
+    +BattleEngine(player : Player, enemies : List<Enemy>, turnOrderStrategy : TurnOrderStrategy, ui : GameUI)
+    +startBattle() : void
+    +processTurn(combatant : Combatant) : void
+    +isGameOver() : boolean
+    +getWinner() : String
+}
+
+@enduml
