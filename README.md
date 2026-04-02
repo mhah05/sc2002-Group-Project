@@ -28,8 +28,8 @@ All code in this project follows standard Java naming conventions:
 | `Combatant` | Abstract Class | Base for every fighter in the game - holds HP, stats, and status effects |
 | `Player` | Abstract Class | Adds player stuff like items and special skill cooldown |
 | `Enemy` | Abstract Class | Base for all enemies, currently always does BasicAttack |
-| `Warrior` | Class | Tank-type player, uses Shield Bash to stun enemies |
-| `Wizard` | Class | Glass cannon player, uses Arcane Blast to hit all enemies and gain attack |
+| `Warrior` | Class | High HP and defense player, uses Shield Bash to stun enemies |
+| `Wizard` | Class | High attack but low HP player, uses Arcane Blast to hit all enemies and gain attack |
 | `Goblin` | Class | Weak enemy, slow but balanced stats |
 | `Wolf` | Class | Fast enemy, high attack but low defense |
 | `Action` | Interface | Defines what an action needs to do |
