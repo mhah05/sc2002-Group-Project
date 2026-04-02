@@ -20,7 +20,7 @@ All code in this project follows standard Java naming conventions:
 
 | Class/Interface | Type | Responsibility |
 |---|---|---|
-| `BattleEngine` | Class | Runs the battle — handles rounds, turns, and checks if the game is over |
+| `BattleEngine` | Class | Runs the battle: handles rounds, turns, and checks if the game is over |
 | `GameUI` | Interface | Defines what the UI must be able to show and ask |
 | `ConsoleUI` | Class | The actual CLI that prints to screen and reads player input |
 | `TurnOrderStrategy` | Interface | Defines how turn order is decided each round |
