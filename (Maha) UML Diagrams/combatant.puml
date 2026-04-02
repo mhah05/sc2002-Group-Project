@@ -1,0 +1,63 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class Combatant {
+  - name : String
+  - maxHp : int
+  - currentHp : int
+  - attack : int
+  - defense : int
+  - speed : int
+  - statusEffects : List<StatusEffect>
+  + Combatant(name : String, maxHp : int, attack : int, defense : int, speed : int)
+  + getAvailableActions() : List<Action>
+  + takeDamage(amount : int) : void
+  + heal(amount : int) : void
+  + isAlive() : boolean
+  + addStatusEffect(effect : StatusEffect) : void
+  + removeExpiredEffects() : void
+}
+
+abstract class Player {
+  - items : List<Item>
+  - specialSkillCooldown : int
+  + Player(...)
+  + canUseSpecialSkill() : boolean
+  + resetCooldown() : void
+  + tickCooldown() : void
+  + useSpecialSkill(targets : List<Combatant>) : void
+}
+
+abstract class Enemy {
+  + Enemy(...)
+}
+
+class Warrior {
+  + Warrior(...)
+  + getAvailableActions() : List<Action>
+  + useSpecialSkill(targets : List<Combatant>) : void
+}
+
+class Wizard {
+  + Wizard(...)
+  + getAvailableActions() : List<Action>
+  + useSpecialSkill(targets : List<Combatant>) : void
+}
+
+class Goblin {
+  + Goblin(...)
+  + getAvailableActions() : List<Action>
+}
+
+class Wolf {
+  + Wolf(...)
+  + getAvailableActions() : List<Action>
+}
+
+Player --|> Combatant
+Enemy --|> Combatant
+Warrior --|> Player
+Wizard --|> Player
+Goblin --|> Enemy
+Wolf --|> Enemy
+@enduml
