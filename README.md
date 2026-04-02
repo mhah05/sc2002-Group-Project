@@ -20,12 +20,12 @@ All code in this project follows standard Java naming conventions:
 
 | Class/Interface | Type | Responsibility |
 |---|---|---|
-| `BattleEngine` | Class | Runs the battle: handles rounds, turns, and checks if the game is over |
+| `BattleEngine` | Class | Runs the battle - handles rounds, turns, and checks if the game is over |
 | `GameUI` | Interface | Defines what the UI must be able to show and ask |
 | `ConsoleUI` | Class | The actual CLI that prints to screen and reads player input |
 | `TurnOrderStrategy` | Interface | Defines how turn order is decided each round |
 | `SpeedBasedOrder` | Class | Orders combatants by speed, fastest goes first |
-| `Combatant` | Abstract Class | Base for every fighter in the game — holds HP, stats, and status effects |
+| `Combatant` | Abstract Class | Base for every fighter in the game - holds HP, stats, and status effects |
 | `Player` | Abstract Class | Adds player stuff like items and special skill cooldown |
 | `Enemy` | Abstract Class | Base for all enemies, currently always does BasicAttack |
 | `Warrior` | Class | Tank-type player, uses Shield Bash to stun enemies |
@@ -51,7 +51,7 @@ All code in this project follows standard Java naming conventions:
 | `PowerStone` | Class | Uses special skill for free without touching the cooldown |
 | `SmokeBomb` | Class | Blocks enemy attacks for 2 turns |
 | `Level` | Class | Stores which enemies spawn and whether there's a backup wave |
-| `GameConfig` | Class | Stores what the player picked at the start — character, level, items |
+| `GameConfig` | Class | Stores what the player picked at the start - character, level, items |
 
 ## Key Attributes and Methods
 
