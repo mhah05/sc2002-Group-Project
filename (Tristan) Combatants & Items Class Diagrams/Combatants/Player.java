@@ -2,7 +2,6 @@ package Combatants;
 
 import java.util.ArrayList;
 import java.util.List;
-import items.Item;
 
 public abstract class Player extends Combatant{
     
@@ -16,11 +15,11 @@ public abstract class Player extends Combatant{
 
     public boolean canUseSpecialSkill() {return this.specialSkillCooldown == 0;}
 
-    public void resetCooldown() {this.specialSkillCooldown = 0;}
+    //After Use of special Skill Cooldown start (length: 3 Turns)
+    public void resetCooldown() {this.specialSkillCooldown = 3;}
 
     public void tickCooldown() {if (this.specialSkillCooldown > 0) this.specialSkillCooldown--;}
 
-    public abstract void useSpecialSkill(List<Combatant> targets);
 }
 
 
