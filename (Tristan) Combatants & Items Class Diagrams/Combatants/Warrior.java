@@ -10,6 +10,9 @@ public class Warrior extends Player {
     }
 
     @Override
+    public Action getSpecialSkill(){return new WarriorSkill();}
+
+    @Override
     public List<Action> getAvailableActions(){
 
         List<Action> actions = new ArrayList<>();
@@ -18,7 +21,7 @@ public class Warrior extends Player {
         actions.add(new Defend());
         actions.add(new ItemAction());
 
-        if (this.canUseSpecialSkill()) actions.add(new WarriorSkill());
+        if (this.canUseSpecialSkill()) actions.add(this.getSpecialSkill());
 
         return actions;
     }
