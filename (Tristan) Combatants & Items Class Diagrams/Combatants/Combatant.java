@@ -6,6 +6,8 @@ import java.util.List;
 import javax.swing.Action;
 
 
+
+
 public abstract class Combatant {
 
         //Combatant Attributes
@@ -32,13 +34,38 @@ public abstract class Combatant {
 
         public abstract List<Action> getAvailableActions();
 
-        // Applies incoming damage after accounting for defense.
-        // Final damage = max(0, incomingAmount - defense).
-        // HP is reduced but never goes below 0.    
-        public void takeDamage(int amount){
-            int damage = Math.max(0, amount - this.defence);
-            this.currentHp = Math.max(0, this.currentHp - damage);
+
+        public void takeDamage(int rawAttackPower) {
+            //draft
+            int bonusDefense = 0;
+            for (StatusEffect effect : statusEffects) {
+                if (effect.getName().equals("DefendEffect")) {
+                    bonusDefense = 10;
+                    break;
+                }
+            }
+            int totalDefense = this.defense + bonusDefense;
+            int finalDamage = Math.max(0, rawAttackPower - totalDefense);
+            for (StatusEffect effect : statusEffects) {
+                if (effect.getName().equals("SmokeBombEffect")) {
+                    finalDamage=0;
+                    System.out.print("(Smoke Bomb active)");
+                    break;
+                }
+            }
+            this.currentHp = Math.max(0, this.currentHp - finalDamage);
+            System.out.println(this.name + " (Defense: " + totalDefense + ") takes "
+                    + finalDamage + " damage." + " ");
+
+            //Example: Goblin (Defense: X) takes X damage. (dmg: finalDamage calculations)
+            
+            //update HP,isAlive and print the HP decrease and the damage calculation
+            //eliminated and check alive will be under the game engine
+
+            //PRINT THE UPDATE (eg: HP: 215 → 200 (dmg: 35−20=15))
+
         }
+
 
         // Restores HP by the given amount.
         // New HP = min(currentHp + amount, maxHp).
@@ -54,7 +81,6 @@ public abstract class Combatant {
             this.statusEffects.add(effect);
             effect.apply(this);
         }
-
         
         public void removeExpiredEffects(){
 
@@ -62,6 +88,13 @@ public abstract class Combatant {
                 if (statusEffects.get(i).isExpired()) statusEffects.remove(i);
            }
         }
-}
 
+        public void updateStatusEffects() {
+            for (StatusEffect effect : statusEffects) {
+                effect.decrementDuration();
+            }
+            this.removeExpiredEffects();
+        }
+
+}
 
