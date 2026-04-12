@@ -11,7 +11,7 @@ public abstract class AbstractStatusEffect implements StatusEffect {
     public boolean isExpired() {
         return duration <= 0;
     }
-    protected void decrementDuration() {
+    public void decrementDuration() {
         if (duration > 0) {
             duration--;
         }
