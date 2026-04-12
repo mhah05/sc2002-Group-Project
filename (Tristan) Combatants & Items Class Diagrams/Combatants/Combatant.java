@@ -61,7 +61,7 @@ public abstract class Combatant {
            for (int i = statusEffects.size() - 1; i >= 0; i--){
                 if (statusEffects.get(i).isExpired()) statusEffects.remove(i);
            }
-        }`
+        }
 }
 
 
