@@ -1,5 +1,8 @@
 package Items;
 
+import java.util.List;
+
+import Combatants.Combatant;
 import Combatants.Player;
 
 public class Potion extends AbstractItem {
@@ -8,7 +11,7 @@ public class Potion extends AbstractItem {
         super("Potion");
     }
     //Potion Heals User by 100HP
-    public void use(Player user){
+    public void use(Player user, List<Combatant> targets){
         if(isConsumed()) return;
 
         user.heal(100);
