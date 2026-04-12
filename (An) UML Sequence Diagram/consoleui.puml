@@ -1,0 +1,61 @@
+@startuml consoleui_class
+skinparam classAttributeIconSize 0
+
+
+interface GameUI {
+    +displayMessage(message : String) : void
+    +displayBattleStatus(combatants : List<Combatant>) : void
+    +getPlayerAction(actions : List<Action>) : Action
+    +getPlayerTarget(targets : List<Combatant>) : Combatant
+    +displayVictory(stats : GameStats) : void
+    +displayDefeat(stats : GameStats) : void
+}
+
+
+class ConsoleUI {
+    -scanner : Scanner
+
+    ' ── Loading Screen ──────────────────────
+    +displayLoadingScreen() : void
+    +displayPlayerOptions(players : List<Player>) : void
+    +getPlayerSelection() : Player
+    +displayItemOptions(items : List<Item>) : void
+    +getItemSelection(slotNumber : int) : Item
+    +displayLevelOptions(levels : List<Level>) : void
+    +getLevelSelection() : Level
+
+    ' ── Gameplay Display ────────────────────
+    +displayRoundStart(roundNumber : int) : void
+    +displayTurnOrder(combatants : List<Combatant>) : void
+    +displayBattleStatus(combatants : List<Combatant>) : void
+    +displayStunnedSkip(combatant : Combatant) : void
+    +displayStatusEffectApplied(combatant : Combatant, effect : StatusEffect) : void
+    +displayStatusEffectExpired(combatant : Combatant, effect : StatusEffect) : void
+    +displayBackupSpawn(enemies : List<Enemy>) : void
+    +displayRoundEnd(roundNumber : int, combatants : List<Combatant>) : void
+    +displayMessage(message : String) : void
+
+    ' ── Player Input During Battle ──────────
+    +getPlayerAction(actions : List<Action>) : Action
+    +getPlayerTarget(targets : List<Combatant>) : Combatant
+
+    ' ── Game Completion ─────────────────────
+    +displayVictory(stats : GameStats) : void
+    +displayDefeat(stats : GameStats) : void
+    +getReplayChoice() : int
+}
+
+
+class GameStats {
+    -remainingHp : int
+    -totalRounds : int
+    -enemiesRemaining : int
+    +getRemainingHp() : int
+    +getTotalRounds() : int
+    +getEnemiesRemaining() : int
+}
+
+GameUI <|.. ConsoleUI
+ConsoleUI ..> GameStats
+
+@enduml

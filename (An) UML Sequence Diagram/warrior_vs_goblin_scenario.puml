@@ -1,0 +1,80 @@
+@startuml warrior_vs_goblin_scenario
+title Warrior vs. Goblin Battle
+
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 20
+
+participant "BattleEngine" as BE
+participant "ConsoleUI" as UI
+participant "warrior : Warrior" as W
+participant "goblin : Goblin" as G
+
+== Turn 1: Goblin attacks ==
+BE -> G : getAvailableActions()
+G --> BE : [BasicAttack]
+BE -> G : BasicAttack.execute(goblin, [warrior])
+G -> W : takeDamage(35)
+note right of W : DEF 20 → takes 15 dmg\nHP: 245/260
+BE -> UI : display("Goblin attacks! Warrior takes 15 dmg. HP: 245/260")
+
+== Turn 2: Warrior defends ==
+BE -> UI : displayActionMenu(warrior)
+UI --> BE : Defend
+BE -> W : Defend.execute(warrior, [])
+W -> W : addStatusEffect(DefendEffect)
+note right of W : +10 DEF, 2 turns
+BE -> UI : display("Warrior defends! DEF +10 for 2 turns.")
+
+== Turn 3: Goblin attacks (reduced) ==
+BE -> G : BasicAttack.execute(goblin, [warrior])
+G -> W : takeDamage(35)
+note right of W : DEF 30 (buffed) → takes 5 dmg\nHP: 240/260
+BE -> UI : display("Goblin attacks! Warrior takes 5 dmg. HP: 240/260")
+
+== Turn 4: Warrior uses Shield Bash ==
+BE -> W : removeExpiredEffects()
+BE -> UI : displayActionMenu(warrior)
+UI --> BE : ShieldBash
+BE -> W : ShieldBash.execute(warrior, [goblin])
+W -> G : takeDamage(40)
+note right of G : DEF 15 → takes 25 dmg\nHP: 30/55
+W -> G : addStatusEffect(StunEffect)
+note right of G : Stunned, 2 turns
+BE -> UI : display("Shield Bash! Goblin takes 25 dmg. Goblin is STUNNED!")
+
+== Turn 5: Goblin stunned ==
+BE -> G : applyStatusEffects()
+BE -> G : isStunned()
+G --> BE : true
+BE -> UI : display("Goblin is stunned! (1 turn remaining)")
+
+== Turn 6: Warrior uses Potion ==
+BE -> UI : displayActionMenu(warrior)
+UI --> BE : ItemAction(Potion)
+BE -> W : ItemAction.execute(warrior, [])
+W -> W : Potion.use(warrior)
+note right of W : heal(100) → HP: 260/260\nPotion consumed
+BE -> UI : display("Warrior uses Potion! HP: 260/260")
+
+== Turn 7: Goblin stunned (expires) ==
+BE -> G : applyStatusEffects()
+BE -> G : isStunned()
+G --> BE : true
+BE -> G : removeExpiredEffects()
+BE -> UI : display("Goblin is stunned! (stun expires)")
+
+== Turn 8: Warrior finishes Goblin ==
+BE -> UI : displayActionMenu(warrior)
+UI --> BE : BasicAttack
+BE -> UI : promptTargetSelection([goblin])
+UI --> BE : goblin
+BE -> W : BasicAttack.execute(warrior, [goblin])
+W -> G : takeDamage(40)
+note right of G : takes 25 dmg → HP: 5/55
+BE -> G : isAlive()
+G --> BE : false
+BE -> UI : display("Warrior attacks for 25 dmg. Goblin DEFEATED!")
+BE -> BE : checkGameOver()
+BE -> UI : displayVictory(hp=260, rounds=8)
+
+@enduml
