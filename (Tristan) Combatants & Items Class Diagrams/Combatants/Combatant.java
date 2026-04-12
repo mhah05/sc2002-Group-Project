@@ -63,9 +63,7 @@ public abstract class Combatant {
             //eliminated and check alive will be under the game engine
 
             //PRINT THE UPDATE (eg: HP: 215 → 200 (dmg: 35−20=15))
-
         }
-
 
         // Restores HP by the given amount.
         // New HP = min(currentHp + amount, maxHp).
