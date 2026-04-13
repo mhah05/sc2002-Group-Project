@@ -1,6 +1,12 @@
 package Combatants;
 
 import java.util.List;
+
+import Action.ArcaneBlast;
+import Action.BasicAttack;
+import Action.Defend;
+import Action.ItemAction;
+
 import java.util.ArrayList;
 
 public class Wizard extends Player{
@@ -12,7 +18,7 @@ public class Wizard extends Player{
 
 
     @override
-    public Action getSpecialSkill(){return new WizardSkill();}
+    public Action getSpecialSkill(){return new ArcaneBlast();}
 
     public List<Action> getAvailableActions(){
 

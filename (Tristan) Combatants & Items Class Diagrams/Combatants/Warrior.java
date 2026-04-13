@@ -1,6 +1,12 @@
 package Combatants;
 
 import java.util.List;
+
+import Action.BasicAttack;
+import Action.Defend;
+import Action.ItemAction;
+import Action.ShieldBash;
+
 import java.util.ArrayList;
 
 public class Warrior extends Player {
@@ -10,7 +16,7 @@ public class Warrior extends Player {
     }
 
     @Override
-    public Action getSpecialSkill(){return new WarriorSkill();}
+    public Action getSpecialSkill(){return new ShieldBash();}
 
     @Override
     public List<Action> getAvailableActions(){

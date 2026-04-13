@@ -30,15 +30,23 @@ public abstract class Combatant {
             this.speed = speed;
         }
 
+        //Getters
+        public String getName() {return this.name;}
         public int getAttack() {return this.attack;}
-
+        public int getSpeed() {return this.speed;}
+        public int getCurrentHp() {return this.currentHp;}
+        public int getMaxHp() {return this.maxHp;}
+        public List<StatusEffect> getStatusEffects() {return this.statusEffects;} 
         public abstract List<Action> getAvailableActions();
+
+        //Setters
+        public void setAttack(int increase) {this.attack+=increase;}
 
 
         public void takeDamage(int rawAttackPower) {
             //draft
             int bonusDefense = 0;
-            for (StatusEffect effect : statusEffects) {
+            for (StatusEffect effect : this.statusEffects) {
                 if (effect.getName().equals("DefendEffect")) {
                     bonusDefense = 10;
                     break;
