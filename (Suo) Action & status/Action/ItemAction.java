@@ -10,12 +10,9 @@ public class ItemAction extends AbstractAction {
             return;
         }
         System.out.println(user.getName() + " → Item");
-
-        //in the item.use(), we may change to
-        item.use(user, targets);
-        //so it may be clearer, while user and target may or may not be same
-
-
-
+        item.use(user);
+        
     }
+    public List<Combatant> getTargets(Combatant user, List<Combatant> potentialTargets, GameUI ui){ return user;}
+
 }
