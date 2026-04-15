@@ -13,6 +13,10 @@ character selection header
 round banners
 victory/defeat screens*/
 import java.util.Scanner;
+
+import Combatants.Combatant;
+import Items.Item;
+
 import java.util.List;
 public class ConsoleUI implements GameUI {
 
@@ -24,7 +28,7 @@ public class ConsoleUI implements GameUI {
             System.out.print("> ");
 
             if(!scanner.hasNextInt()) {
-                System.out.println("Numbers only, brave one. Try again."
+                System.out.println("Numbers only. Try again."
                );
                scanner.next();
                continue;
@@ -33,7 +37,7 @@ public class ConsoleUI implements GameUI {
             int choice = scanner.nextInt();
 
             if (choice < min || choice > max) {
-                System.out.println("Choose between " + min + "and " + max + ".");
+                System.out.println("Choose between " + min + " and " + max + ".");
                 continue;
             }
             return choice;
@@ -56,29 +60,38 @@ public class ConsoleUI implements GameUI {
             System.out.println(i + ". " + actions.get(i-1).getName());
         }
      }
-
-    public Action askActionChoice(List<Action> actions) {
-        for (int i = 1; i <= actions.size(); i++) {
-            System.out.println(i + ". " + actions.get(i-1).getName());
+    
+    @Override
+    public void displayTargets(List<? extends Combatant> targets) {
+        for (int i = 1; i <= targets.size(); i++) {
+            System.out.println(i + ". " + targets.get(i-1).getName());
         }
+    }
+
+    @Override
+    public void displayItems(List<Item> items) {
+        for (int i = 1; i <= items.size(); i++) {
+            System.out.println(i + ". " + items.get(i-1).getName());
+        }
+    }
+
+    @Override
+    public Action getPlayerAction(List<Action> actions) {
+        displayLegalActions(actions);
         int choice = readChoice(1, actions.size());
         return actions.get(choice-1);
     }
 
-    public Combatant askTargetChoice(List<? extends Combatant> targets) {
-        for (int i = 1; i <= targets.size(); i++) {
-            System.out.println(i + ". " + targets.get(i-1).getName());
-        }
-
+    @Override
+    public Combatant getPlayerTarget(List<? extends Combatant> targets) {
+        displayTargets(targets);
         int choice = readChoice(1, targets.size());
         return targets.get(choice-1); 
     }
-
-    public Item askItemChoice(List<Item> items) {
-        for (int i = 1; i <= items.size(); i++) {
-            System.out.println(i + ". " + items.get(i-1).getName());
-        }
-
+    
+    @Override
+    public Item getPlayerItem(List<Item> items) {
+        displayItems(items);
         int choice = readChoice(1, items.size());
         return items.get(choice-1);
     }
@@ -105,9 +118,8 @@ public class ConsoleUI implements GameUI {
     public PlayerOption playerTurn (BattleState state, List<Action> legalActions, List<? extends Combatant> validTargets, List<Item> usableItems) {
         while (true) {
             displayBattleState(state);
-            displayLegalActions(legalActions);
 
-            Action action = askActionChoice(legalActions);
+            Action action = getPlayerAction(legalActions);
 
             if (action.getName().equals("Exit")) {
                 if (userExit()) {
@@ -118,10 +130,32 @@ public class ConsoleUI implements GameUI {
                 }
             }
 
-            Combatant chosenTarget = null;
-            /* haven't add code for asking for validTargets and ask for item */
+            /* haven't add code asking for item */
 
-            return new PlayerOption(action, null, null, false);
+            Combatant chosenTarget = null;
+            Item chosenItem = null;
+
+            switch (action.getTargetType()) {
+                case NONE:
+                    break;
+                case SELF:
+                    chosenTarget = state.getCurrentChar();
+                    break;
+                case SINGLE_ENEMY:
+                    chosenTarget = getPlayerTarget(validTargets);
+                    break;
+                case ALL_ENEMIES:
+                    break;
+            }
+
+            switch (action.getItemType()) {
+                case NONE:
+                    break;
+                case SELECT_ITEM:
+                    chosenItem = getPlayerItem(usableItems);
+                    break;
+            }
+            return new PlayerOption(action, chosenTarget, chosenItem, false);
         }
     }
 
