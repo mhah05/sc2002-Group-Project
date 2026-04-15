@@ -1,4 +1,5 @@
 package statuseffects;
+import combatants.Combatant;
 public abstract class AbstractStatusEffect implements StatusEffect {
     private String name;
     private int duration;
