@@ -1,4 +1,9 @@
 package actions;
+import java.util.ArrayList;
+import java.util.List;
+import combatants.Combatant;
+import ui.GameUI;
+import statuseffects.DefendEffect;
 public class Defend extends AbstractAction {
     public Defend() {
         super("Defend");
