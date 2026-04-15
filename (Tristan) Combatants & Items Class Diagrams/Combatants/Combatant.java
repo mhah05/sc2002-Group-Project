@@ -43,7 +43,6 @@ public abstract class Combatant {
 
 
         public void takeDamage(int rawAttackPower) {
-            //draft
             int bonusDefence = 0;
             for (StatusEffect effect : this.statusEffects) {
                 if (effect.getName().equals("DefendEffect")) {
