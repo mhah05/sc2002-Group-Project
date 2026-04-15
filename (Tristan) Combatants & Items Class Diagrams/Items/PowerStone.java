@@ -11,7 +11,7 @@ public class PowerStone extends AbstractItem{
     }
     public void use(Player user){
         Action skill = user.getSpecialSkill();
-        skill.execute(user,this.getTargets());
+        skill.execute(user,BasicAttack.getTargets(user));
         this.markConsumed();
     }
 }

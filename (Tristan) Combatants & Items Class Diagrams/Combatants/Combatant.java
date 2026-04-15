@@ -39,7 +39,7 @@ public abstract class Combatant {
         public abstract List<Action> getAvailableActions();
 
         //Setters
-        public void setAttack(int increase) {this.attack+=increase;}
+        public void setAttack(int finalAttack) {this.attack = finalAttack;}
 
 
         public void takeDamage(int rawAttackPower) {

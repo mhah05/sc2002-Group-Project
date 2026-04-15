@@ -2,10 +2,11 @@ package combatants;
 
 import java.util.List;
 
-import Action.BasicAttack;
-import Action.Defend;
-import Action.ItemAction;
-import Action.ShieldBash;
+import actions.BasicAttack;
+import actions.Defend;
+import actions.ItemAction;
+import actions.ShieldBash;
+import actions.Action;
 
 import java.util.ArrayList;
 
