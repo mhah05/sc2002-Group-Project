@@ -203,7 +203,7 @@ public class BattleEngine
     {
     	for (StatusEffect effect : c.getStatusEffects())
     	{
-            if (effect.getName().equals("Stun") && !effect.isExpired()) 
+            if (effect.getName().equals("StunEffect") && !effect.isExpired()) 
             {
                 return true;
             }
