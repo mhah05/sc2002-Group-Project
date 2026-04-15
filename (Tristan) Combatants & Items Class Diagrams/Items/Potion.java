@@ -11,11 +11,10 @@ public class Potion extends AbstractItem {
         super("Potion");
     }
     //Potion Heals User by 100HP
-    public void use(Player user, List<Combatant> targets){
+    public void use(Player user){
         if(isConsumed()) return;
 
         user.heal(100);
         markConsumed();
     }
-    
 }

@@ -13,7 +13,7 @@ public class SmokeBomb extends AbstractItem{
 
     //Add targets from itemAction
 
-    public void use(Player user,List<Combatant> targets){
+    public void use(Player user){
         if (isConsumed()) return;
         user.addStatusEffect(new SmokeBombEffect());
         markConsumed();
