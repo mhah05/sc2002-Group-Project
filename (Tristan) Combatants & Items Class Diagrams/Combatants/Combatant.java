@@ -45,15 +45,15 @@ public abstract class Combatant {
 
         public void takeDamage(int rawAttackPower) {
             //draft
-            int bonusDefense = 0;
+            int bonusDefence = 0;
             for (StatusEffect effect : this.statusEffects) {
                 if (effect.getName().equals("DefendEffect")) {
-                    bonusDefense = 10;
+                    bonusDefence = 10;
                     break;
                 }
             }
-            int totalDefense = this.defense + bonusDefense;
-            int finalDamage = Math.max(0, rawAttackPower - totalDefense);
+            int totalDefence = this.defence + bonusDefence;
+            int finalDamage = Math.max(0, rawAttackPower - totalDefence);
             for (StatusEffect effect : statusEffects) {
                 if (effect.getName().equals("SmokeBombEffect")) {
                     finalDamage=0;
@@ -62,10 +62,10 @@ public abstract class Combatant {
                 }
             }
             this.currentHp = Math.max(0, this.currentHp - finalDamage);
-            System.out.println(this.name + " (Defense: " + totalDefense + ") takes "
+            System.out.println(this.name + " (Defence: " + totalDefence + ") takes "
                     + finalDamage + " damage." + " ");
 
-            //Example: Goblin (Defense: X) takes X damage. (dmg: finalDamage calculations)
+            //Example: Goblin (Defence: X) takes X damage. (dmg: finalDamage calculations)
             
             //update HP,isAlive and print the HP decrease and the damage calculation
             //eliminated and check alive will be under the game engine
@@ -89,7 +89,6 @@ public abstract class Combatant {
         }
         
         public void removeExpiredEffects(){
-
            for (int i = statusEffects.size() - 1; i >= 0; i--){
                 if (statusEffects.get(i).isExpired()) statusEffects.remove(i);
            }
