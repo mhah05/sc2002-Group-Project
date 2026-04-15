@@ -6,6 +6,6 @@ public abstract class SpecialSkill extends AbstractAction {
     public SpecialSkill(String name) {
         super(name);
     }
-    public abstract List<Combatant> getTargets(Combatant user, List<Combatant> enemies, GameUI ui);
+    public abstract List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui);
 
 }
