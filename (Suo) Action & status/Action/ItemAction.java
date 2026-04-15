@@ -14,10 +14,15 @@ public class ItemAction extends AbstractAction {
             System.out.println(item.getName() + " is already used up!");
             return;
         }
+        ui.getPlayerItem();
         System.out.println(user.getName() + " → Item");
         item.use(user);
         
     }
-    public List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui){return target;}
+    public List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui){
+        List<Combatant> targets = new ArrayList<>();
+        targets.add(user);
+        return targets;
+    }
 
 }
