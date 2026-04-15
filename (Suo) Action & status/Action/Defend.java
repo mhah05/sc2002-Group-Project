@@ -1,5 +1,4 @@
-package Action;
-
+package actions;
 public class Defend extends AbstractAction {
     public Defend() {
         super("Defend");
