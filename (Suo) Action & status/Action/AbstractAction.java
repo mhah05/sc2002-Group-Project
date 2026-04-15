@@ -8,4 +8,6 @@ public abstract class AbstractAction implements Action {
         return this.name;
     }
     public abstract void execute(Combatant user, List<Combatant> targets);
+    public abstract List<Combatant> getTargets(Combatant user, List<Enemy> enemies, GameUI ui);
+
 }
