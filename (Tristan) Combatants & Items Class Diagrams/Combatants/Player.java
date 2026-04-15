@@ -16,6 +16,8 @@ public abstract class Player extends Combatant{
         this.specialSkillCooldown = 0;
     }
 
+    public List<Item> getItems(){return this.items;}
+
     public boolean canUseSpecialSkill() {return this.specialSkillCooldown == 0;}
 
     //After Use of special Skill Cooldown start (length: 3 Turns including current)
