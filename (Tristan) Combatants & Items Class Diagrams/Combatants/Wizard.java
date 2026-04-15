@@ -15,7 +15,7 @@ public class Wizard extends Player{
         super("Wizard", 200, 50, 10, 20);
     }
 
-    void setAttack(int finalAttack ){this.attack = finalAttack;}
+    public void setAttack(int finalAttack ){this.attack = finalAttack;}
 
     @Override
     public Action getSpecialSkill(){return new ArcaneBlast();}
