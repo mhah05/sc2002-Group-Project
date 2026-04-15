@@ -4,16 +4,16 @@ import combatants.Combatant;
 import ui.GameUI;
 import items.Item;
 public class ItemAction extends AbstractAction {
-    private Item item;
-    public ItemAction(Item item) {
+    public ItemAction() {
         super(item.getName());
-        this.item = item;
     }
     public void execute(Combatant user, List<Combatant> targets) {
+        //check available
         if (item.isConsumed()) {
             System.out.println(item.getName() + " is already used up!");
             return;
         }
+        //decide item to use
         ui.getPlayerItem();
         System.out.println(user.getName() + " → Item");
         item.use(user);
