@@ -10,6 +10,7 @@ public class PowerStone extends AbstractItem{
         super("Power Stone");
     }
     public void use(Player user){
+        Action specialSkill = player.getSpecialSkill();
         this.markConsumed();
     }
 }
