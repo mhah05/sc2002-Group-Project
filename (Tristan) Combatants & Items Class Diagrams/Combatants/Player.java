@@ -1,7 +1,10 @@
-package Combatants;
+package combatants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import items.Item;
+import actions.Action;
 
 public abstract class Player extends Combatant{
     

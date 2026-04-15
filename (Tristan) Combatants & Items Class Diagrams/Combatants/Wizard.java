@@ -1,13 +1,12 @@
-package Combatants;
+package combatants;
 
 import java.util.List;
-
-import Action.ArcaneBlast;
-import Action.BasicAttack;
-import Action.Defend;
-import Action.ItemAction;
-
 import java.util.ArrayList;
+
+import actions.ArcaneBlast;
+import actions.BasicAttack;
+import actions.Defend;
+import actions.Action;
 
 public class Wizard extends Player{
 

@@ -1,8 +1,9 @@
 package engine;
 
-import Combatants.Enemy;
 import java.util.ArrayList;
 import java.util.List;
+
+import combatants.Enemy;
 
 public class Level 
 {

@@ -1,9 +1,6 @@
-package Items;
+package items;
 
-import java.util.List;
-
-import Combatants.Combatant;
-import Combatants.Player;
+import combatants.Player;
 
 public interface Item{
 

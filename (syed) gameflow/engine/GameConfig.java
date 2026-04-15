@@ -1,7 +1,8 @@
 package engine;
 
-import Combatants.Player;
-import Items.Item;
+import combatants.Player;
+import items.Item;
+
 import java.util.List;
 
 public class GameConfig 

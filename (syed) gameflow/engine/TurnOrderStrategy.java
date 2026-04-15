@@ -1,7 +1,8 @@
 package engine;
 
-import Combatants.Combatant;
 import java.util.List;
+
+import combatants.Combatant;
 
 /**
  * Strategy interface for determining turn order each round.

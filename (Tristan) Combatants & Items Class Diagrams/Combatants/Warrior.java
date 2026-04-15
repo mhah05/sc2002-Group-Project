@@ -1,4 +1,4 @@
-package Combatants;
+package combatants;
 
 import java.util.List;
 

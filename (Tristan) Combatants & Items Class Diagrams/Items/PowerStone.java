@@ -1,11 +1,8 @@
-package Items;
+package items;
 
-import java.util.List;
-
-import Actions.Action;
-
-import Combatants.Combatant;
-import Combatants.Player;
+import actions.Action;
+import actions.BasicAttack;
+import combatants.Player;
 
 public class PowerStone extends AbstractItem{
 

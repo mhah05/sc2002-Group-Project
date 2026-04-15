@@ -1,8 +1,9 @@
 package engine;
 
-import Combatants.Combatant;
 import java.util.ArrayList;
 import java.util.List;
+
+import combatants.Combatant;
 
 public class SpeedBasedOrder implements TurnOrderStrategy
 {

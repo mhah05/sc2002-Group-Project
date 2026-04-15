@@ -1,11 +1,10 @@
-package Combatants;
+package combatants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Action;
-
-
+import actions.Action;
+import statuseffects.StatusEffect;
 
 
 public abstract class Combatant {

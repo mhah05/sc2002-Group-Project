@@ -1,11 +1,12 @@
 package engine;
 
-import Combatants.Combatant;
-import Combatants.Player;
-import Combatants.Enemy;
 import ui.GameUI;
 import Actions.Action;
 import Actions.StatusEffect;
+import combatants.Combatant;
+import combatants.Enemy;
+import combatants.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 

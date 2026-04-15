@@ -1,7 +1,10 @@
-package Combatants;
+package combatants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import action.Action;
+import actions.BasicAttack;
 
 public class Wolf extends Enemy {
 
