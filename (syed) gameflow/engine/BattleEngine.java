@@ -1,12 +1,11 @@
 package engine;
 
-import ui.GameUI;
-import Actions.Action;
-import Actions.StatusEffect;
 import combatants.Combatant;
-import combatants.Enemy;
 import combatants.Player;
-
+import combatants.Enemy;
+import ui.GameUI;
+import actions.Action;
+import statuseffects.StatusEffect;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,78 +131,17 @@ public class BattleEngine
 		Action chosen = ui.getPlayerAction(actions);
 		
 		// Determine target lost based on the action chosen
-		List<Combatant> targets = resolveTargets(player, chosen);
+		List<Combatant> targets = chosen.getTargets(player, getAllCombatants(), ui);
 		chosen.execute(player, targets);
 	}
 	
 	// To handle an enemy's turn: always BasicAttack on the player.
 	private void enemyTurn(Combatant enemy)
 	{
-		List<Action> actions = enemy.getAvailableActions();
-		Action action = actions.get(0); // enemies always do BasicAttack
-		
-		List<Combatant> targets = new ArrayList<>();
-		targets.add(player); // enemy always targets the player
+		Action action = enemy.getAvailableActions().get(0); // enemies always do BasicAttack
+		List<Combatant> targets = action.getTargets(enemy, getAllCombatants(), ui);
 		action.execute(enemy, targets);
 	}
-	
-	/**
-     * Determines who the action should target.
-     * For attack-type actions: player picks from alive enemies.
-     * For Defend and item actions: target is the player themselves.
-     * For Arcane Blast/AoE: all alive enemies.
-     *
-     * NOTE: May need to change equals() checks if they don't exactly match what
-     * WarriorSkill.getName() and WizardSkill.getName() returns - to check with Suo
-     */
-    private List<Combatant> resolveTargets(Player player, Action action) 
-    {
-        List<Combatant> targets = new ArrayList<>();
-        String actionName = action.getName();
-
-        if (actionName.equals("Defend") || actionName.equals("Item")) 
-        {
-            // Self-targeting
-            targets.add(player);
-        } 
-        else if (actionName.equals("Arcane Blast")) 
-        {
-            // AoE - all alive enemies
-            for (Enemy e : enemies) 
-            {
-                if (e.isAlive()) targets.add(e);
-            }
-
-        } 
-        else if (actionName.equals("Shield Bash") || actionName.equals("Basic Attack")) 
-        {
-            // Single target - player picks from alive enemies
-            List<Combatant> aliveEnemies = new ArrayList<>();
-            for (Enemy e : enemies) 
-            {
-                if (e.isAlive()) aliveEnemies.add(e);
-            }
-            Combatant target = ui.getPlayerTarget(aliveEnemies);
-            targets.add(target);
-
-        } 
-        else 
-        {
-            // Default: single target pick
-            List<Combatant> aliveEnemies = new ArrayList<>();
-            for (Enemy e : enemies) 
-            {
-                if (e.isAlive()) aliveEnemies.add(e);
-            }
-            if (!aliveEnemies.isEmpty()) 
-            {
-                Combatant target = ui.getPlayerTarget(aliveEnemies);
-                targets.add(target);
-            }
-        }
-
-        return targets;
-    }
     
     // Win/Loss checking:
     
