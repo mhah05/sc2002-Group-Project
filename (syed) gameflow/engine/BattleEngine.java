@@ -133,6 +133,9 @@ public class BattleEngine
 		// Determine target lost based on the action chosen
 		List<Combatant> targets = chosen.getTargets(player, getAllCombatants(), ui);
 		chosen.execute(player, targets);
+		if (chosen instanceof SpecialSkill) {
+        	player.resetCooldown();
+    	}
 	}
 	
 	// To handle an enemy's turn: always BasicAttack on the player.
