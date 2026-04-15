@@ -1,3 +1,4 @@
+package statuseffects;
 public class StunEffect extends AbstractStatusEffect {
     public StunEffect() {
         super("StunEffect", 2);
@@ -6,4 +7,4 @@ public class StunEffect extends AbstractStatusEffect {
         System.out.println(target.getName() + " STUNNED (2 turns)");
         //this case the target will be the enemy
         }
-    }
+}
