@@ -19,4 +19,13 @@ public class ArcaneBlast extends SpecialSkill {
             //to be added under Wizard/player class;
         }
     }
+    public List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui) {
+        List<Combatant> targets = new ArrayList<>();
+        for (Combatant c : target) {
+            if (c instanceof Enemy && c.isAlive()) {
+                targets.add(c);
+            }
+        }
+        return targets;
+    }
 }
