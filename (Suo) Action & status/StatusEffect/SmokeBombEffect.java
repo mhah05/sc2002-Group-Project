@@ -1,4 +1,4 @@
-
+package statuseffects;
 public class SmokeBombEffect extends AbstractStatusEffect {
     public SmokeBombEffect() {
         super("SmokeBombEffect", 1);
