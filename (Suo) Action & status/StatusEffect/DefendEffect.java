@@ -1,4 +1,5 @@
 package statuseffects;
+import combatants.Combatant;
 public class DefendEffect extends AbstractStatusEffect {
     public DefendEffect() {
         super("DefendEffect", 2);
