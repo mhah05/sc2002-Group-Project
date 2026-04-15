@@ -1,4 +1,7 @@
 package actions;
+import java.util.List;
+import combatants.Combatant;
+import ui.GameUI;
 public abstract class AbstractAction implements Action {
     protected String name;
 
