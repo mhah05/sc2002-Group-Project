@@ -1,5 +1,4 @@
-package Action;
-
+package actions;
 public class ShieldBash extends SpecialSkill {
     public ShieldBash() {
         super("Shield Bash");
