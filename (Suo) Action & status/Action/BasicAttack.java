@@ -1,4 +1,10 @@
 package actions;
+import java.util.ArrayList;
+import java.util.List;
+import combatants.Combatant;
+import combatants.Enemy;
+import combatants.Player;
+import ui.GameUI;
 public class BasicAttack extends AbstractAction{
     public BasicAttack() {
         super("Basic Attack");
