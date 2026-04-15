@@ -23,6 +23,8 @@ public abstract class Player extends Combatant{
 
     public void tickCooldown() {if (this.specialSkillCooldown > 0) this.specialSkillCooldown--;}
 
+    public void addItem(Item item){this.items.add(item);}
+
     public abstract Action getSpecialSkill();
 
 }
