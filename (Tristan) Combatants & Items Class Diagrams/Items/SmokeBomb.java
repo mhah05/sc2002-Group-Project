@@ -11,13 +11,8 @@ public class SmokeBomb extends AbstractItem{
         super("Smoke Bomb");
     }
 
-    //Add targets from itemAction
-
     public void use(Player user){
-        if (isConsumed()) return;
         user.addStatusEffect(new SmokeBombEffect());
-        markConsumed();
-        
-
+        this.markConsumed();
     }
 }

@@ -22,7 +22,7 @@ public class Warrior extends Player {
     public List<Action> getAvailableActions(){
 
         List<Action> actions = new ArrayList<>();
-
+        
         actions.add(new BasicAttack());
         actions.add(new Defend());
         actions.add(new ItemAction());

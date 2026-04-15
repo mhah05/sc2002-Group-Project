@@ -14,12 +14,13 @@ public class Wizard extends Player{
     public Wizard(){
         super("Wizard", 200, 50, 10, 20);
     }
-    //Add setAttack() for wizard effect
 
+    void setAttack(int finalAttack ){this.attack = finalAttack;}
 
-    @override
+    @Override
     public Action getSpecialSkill(){return new ArcaneBlast();}
 
+    @Override
     public List<Action> getAvailableActions(){
 
         List<Action> actions = new ArrayList<>();

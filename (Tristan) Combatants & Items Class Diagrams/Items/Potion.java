@@ -12,9 +12,7 @@ public class Potion extends AbstractItem {
     }
     //Potion Heals User by 100HP
     public void use(Player user){
-        if(isConsumed()) return;
-
         user.heal(100);
-        markConsumed();
+        this.markConsumed();
     }
 }
