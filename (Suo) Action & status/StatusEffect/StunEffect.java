@@ -1,4 +1,5 @@
 package statuseffects;
+import combatants.Combatant;
 public class StunEffect extends AbstractStatusEffect {
     public StunEffect() {
         super("StunEffect", 2);
