@@ -14,7 +14,7 @@ public class ArcaneBlast extends SpecialSkill {
         if (enemiesKilled > 0) {
             int buffAmount = enemiesKilled * 10;
             int finalAttack = user.getAttack()+buffAmount;
-            System.out.println("ATK: "+user.getAttack()+" → "+finalAttack+" (+10 per Arcane Blast kill));
+            System.out.println("ATK: "+user.getAttack()+" → "+finalAttack+" (+10 per Arcane Blast kill)");
             user.setAttack(finalAttack);
             //to be added under Wizard/player class;
         }
