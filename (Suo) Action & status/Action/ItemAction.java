@@ -18,6 +18,6 @@ public class ItemAction extends AbstractAction {
         item.use(user);
         
     }
-    public List<Combatant> getTargets(Combatant user, List<Combatant> potentialTargets, GameUI ui){return potentialTargets;}
+    public List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui){return target;}
 
 }
