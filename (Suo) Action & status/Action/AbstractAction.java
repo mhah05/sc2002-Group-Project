@@ -1,3 +1,4 @@
+package actions;
 public abstract class AbstractAction implements Action {
     protected String name;
 

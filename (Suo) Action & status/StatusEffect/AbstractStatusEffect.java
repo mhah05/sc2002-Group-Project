@@ -1,3 +1,4 @@
+package statuseffects;
 public abstract class AbstractStatusEffect implements StatusEffect {
     private String name;
     private int duration;

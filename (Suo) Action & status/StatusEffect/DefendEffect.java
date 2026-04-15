@@ -1,3 +1,4 @@
+package statuseffects;
 public class DefendEffect extends AbstractStatusEffect {
     public DefendEffect() {
         super("DefendEffect", 2);

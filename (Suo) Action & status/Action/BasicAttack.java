@@ -1,3 +1,4 @@
+package actions;
 public class BasicAttack extends AbstractAction{
     public BasicAttack() {
         super("Basic Attack");
