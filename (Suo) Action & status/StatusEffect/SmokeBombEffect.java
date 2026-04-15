@@ -1,4 +1,5 @@
 package statuseffects;
+import combatants.Combatant;
 public class SmokeBombEffect extends AbstractStatusEffect {
     public SmokeBombEffect() {
         super("SmokeBombEffect", 1);
