@@ -1,4 +1,8 @@
 package actions;
+import java.util.List;
+import combatants.Combatant;
+import ui.GameUI;
+import items.Item;
 public class ItemAction extends AbstractAction {
     private Item item;
     public ItemAction(Item item) {
