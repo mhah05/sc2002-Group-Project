@@ -1,5 +1,4 @@
-package Action;
-
+package actions;
 public class ArcaneBlast extends SpecialSkill {
     public ArcaneBlast() {
         super("Arcane Blast");
