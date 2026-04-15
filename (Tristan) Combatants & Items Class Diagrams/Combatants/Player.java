@@ -25,6 +25,18 @@ public abstract class Player extends Combatant{
 
     public void addItem(Item item){this.items.add(item);}
 
+    public List<Item> getAvailableItems(){
+        List<Item> availableItems = new ArrayList<>();
+
+        for(Item item : this.items){
+            if(!item.isConsumed()){
+                availableItems.add(item);
+            }
+        }
+
+        return availableItems;
+    }
+
     public abstract Action getSpecialSkill();
 
 }
