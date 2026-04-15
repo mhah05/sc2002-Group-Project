@@ -15,6 +15,10 @@ public class ShieldBash extends SpecialSkill {
         Combatant target = targets.get(0);
         target.takeDamage(user.getAttack());
         target.addStatusEffect(new StunEffect());
+        if (user instanceof Player) {
+            Player p = (Player) user;
+            p.resetCooldown();
+        }
     }
     
     public List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui){
