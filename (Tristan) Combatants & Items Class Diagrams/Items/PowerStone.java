@@ -1,7 +1,8 @@
 package items;
 
-import actions.Action;
-import actions.BasicAttack;
+import java.util.List;
+import combatants.Combatant;
+import ui.GameUI;
 import combatants.Player;
 
 public class PowerStone extends AbstractItem{
@@ -9,10 +10,15 @@ public class PowerStone extends AbstractItem{
     public PowerStone(){
         super("Power Stone");
     }
-    public void use(Player user){
-        Action specialSkill = player.getSpecialSkill();
-        List<Combatant> targets = chosen.getTargets(player, getAllCombatants(), ui);
-		chosen.execute(player, targets);
-        this.markConsumed();
+    public void use(Combatant user, List<Combatant> allCombatants, GameUI ui) {
+        if (user instanceof Player) {
+            Player player = (Player) user;
+            Action specialSkill = player.getSpecialSkill();
+            if (specialSkill != null) {
+                this.markConsumed();
+                List<Combatant> targets = specialSkill.getTargets(user, allCombatants, ui);
+                specialSkill.execute(player, targets);
+            }
+        }
     }
 }
