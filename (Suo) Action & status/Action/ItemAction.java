@@ -1,4 +1,5 @@
 package actions;
+import java.util.ArrayList;
 import java.util.List;
 import combatants.Combatant;
 import ui.GameUI;
@@ -6,14 +7,20 @@ import items.Item;
 import combatants.Player;
 public class ItemAction extends AbstractAction {
     private Item selectedItem;
+    private List<Combatant> allTargets;
+    private GameUI savedUI;
+    
     public ItemAction() {
         super(item.getName());
     }
-    public List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui){
+    public List<Combatant> getTargets(Combatant user, List<Combatant> allTargets, GameUI ui){
+        this.allTargets = allTargets;
+        this.savedUI = ui;
+        
         List<Combatant> targets = new ArrayList<>();
         Player player = (Player) user;
         List<Item> items = player.getItems();
-        if (inventory.isEmpty()) {
+        if (items.isEmpty()) {
             System.out.println("No available items!");
             return targets;
         }
@@ -21,7 +28,7 @@ public class ItemAction extends AbstractAction {
         targets.add(user);
         return targets;
     }
-    public void execute(Combatant user, List<Combatant> targets) {
+    public void execute(Combatant user, List<Combatant> target) {
         //check available
         if (selectedItem == null) return;
         if (item.isConsumed()) {
@@ -29,7 +36,7 @@ public class ItemAction extends AbstractAction {
             return;
         }
         //decide item to use
-        System.out.println(user.getName() + " → Item");
-        selectedItem.use(user);
+        System.out.println(user.getName() + " → Item → " + selectedItem.getName + " used:");
+        selectedItem.use(user,this.allTargets,this.savedUI);
     }
 }
