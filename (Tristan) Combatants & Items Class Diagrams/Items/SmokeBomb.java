@@ -1,6 +1,8 @@
 package items;
 
-import combatants.Player;
+import java.util.List;
+import combatants.Combatant;
+import ui.GameUI;
 import statuseffects.SmokeBombEffect;
 
 public class SmokeBomb extends AbstractItem{
@@ -9,7 +11,7 @@ public class SmokeBomb extends AbstractItem{
         super("Smoke Bomb");
     }
 
-    public void use(Player user){
+    public void use(Combatant user, List<Combatant> allCombatants, GameUI ui) {
         user.addStatusEffect(new SmokeBombEffect());
         this.markConsumed();
     }
