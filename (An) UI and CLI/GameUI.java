@@ -22,7 +22,10 @@ public interface GameUI {
     int showMainMenu(); // 1=Start, 2=How to Play, 3=Exit
     String choosePlayerClass(); // Warrior / Wizard
     int chooseLevel(int minLevel, int maxLevel);
-    List chooseStartingItems(List availableItems, int maxChoices);
+    java.util.List<items.ItemType> chooseStartingItemTypes(
+        java.util.List<items.ItemType> availableTypes,
+        int maxChoices
+    );
     boolean confirmStart(String playerClass, int level, List items);
     void waitForEnter();
 }

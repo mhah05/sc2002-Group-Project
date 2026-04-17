@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import items.ItemFactory;
+import items.ItemType;
 import combatants.Enemy;
 import combatants.Goblin;
 import combatants.Player;
@@ -136,7 +138,7 @@ public class ConsoleUI implements GameUI {
 
     @Override
     public void showOpeningScene() {
-        System.out.println("This is the opening scene.");
+        System.out.println("Welcome to ");
         System.out.println();
     }
 
@@ -165,33 +167,30 @@ public class ConsoleUI implements GameUI {
     }
 
     @Override
-    public List chooseStartingItems(List availableItems, int maxChoices) {
-        List<items.Item> typedAvailableItems = (List<items.Item>) availableItems;
-        List<items.Item> selected = new ArrayList<>();
-        if (typedAvailableItems == null || typedAvailableItems.isEmpty() || maxChoices <= 0) {
+    public List<ItemType> chooseStartingItemTypes(List<ItemType> availableItems, int maxChoices) {
+        List<ItemType> selected = new ArrayList<>();
+        if (availableItems == null || availableItems.isEmpty() || maxChoices <= 0) {
             return selected;
         }
 
         while (selected.size() < maxChoices) {
             System.out.println("Choose item " + (selected.size() + 1) + " of " + maxChoices + ":");
-            for (int i = 0; i < typedAvailableItems.size(); i++) {
-                items.Item item = typedAvailableItems.get(i);
-                System.out.println((i + 1) + ". " + item.getName());
+            for (int i = 0; i < availableItems.size(); i++) {
+                System.out.println((i + 1) + ". " + availableItems.get(i).getLabel());
             }
-            System.out.println((typedAvailableItems.size() + 1) + ". Done");
+            System.out.println((availableItems.size() + 1) + ". Done");
 
-            int choice = readChoice(1, typedAvailableItems.size() + 1);
-            if (choice == typedAvailableItems.size() + 1) {
-                break;
-            }
+            int choice = readChoice(1, availableItems.size() + 1);
+            if (choice == availableItems.size() + 1) break;
 
-            items.Item picked = typedAvailableItems.get(choice - 1);
-            selected.add(picked);
-            System.out.println("Added: " + picked.getName());
+            ItemType pickedType = availableItems.get(choice - 1);
+            selected.add(pickedType); 
+            System.out.println("Added: " + pickedType.getLabel());
         }
 
         return selected;
     }
+
 
     @Override
     public boolean confirmStart(String playerClass, int level, List items) {
@@ -231,24 +230,31 @@ public class ConsoleUI implements GameUI {
     private GameConfig initializeGameConfig() {
         String playerClass = choosePlayerClass();
         int levelNumber = chooseLevel(1, 3);
-        List<items.Item> selectedItems = chooseStartingItems(getDefaultItems(), 2);
-
+        List<ItemType> selectedTypes = chooseStartingItemTypes(getDefaultItemTypes(), 2);
+        List<Item> selectedItems = buildItemsFromTypes(selectedTypes);
         if (!confirmStart(playerClass, levelNumber, selectedItems)) {
             return null;
         }
 
         Player player = "Warrior".equalsIgnoreCase(playerClass) ? new Warrior() : new Wizard();
         Level level = buildLevel(levelNumber);
+
         return new GameConfig(player, level, selectedItems);
+
     }
 
-    private List<items.Item> getDefaultItems() {
-        List<items.Item> items = new ArrayList<>();
-        items.add(new Potion());
-        items.add(new SmokeBomb());
-        items.add(new PowerStone());
+    private List<ItemType> getDefaultItemTypes() {
+    return List.of(ItemType.POTION, ItemType.SMOKE_BOMB, ItemType.POWER_STONE);
+}
+
+    private List<Item> buildItemsFromTypes(List<ItemType> selectedTypes) {
+        List<Item> items = new ArrayList<>();
+        for (ItemType type : selectedTypes) {
+            items.add(ItemFactory.create(type)); 
+        }
         return items;
     }
+
 
     private Level buildLevel(int levelNumber) {
         Level level = new Level(levelNumber, "Normal");
