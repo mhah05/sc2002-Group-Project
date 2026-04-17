@@ -1,8 +1,10 @@
 package items;
 
 import java.util.List;
-import combatants.Combatant;
+
 import ui.GameUI;
+import actions.Action;
+import combatants.Combatant;
 import combatants.Player;
 
 public class PowerStone extends AbstractItem{
