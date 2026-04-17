@@ -290,6 +290,10 @@ public class ConsoleUI implements GameUI {
                     continue;
                 }
 
+                for (items.Item item : config.getItems()) {
+                    config.getPlayer().addItem(item);
+                }
+                     
                 BattleEngine engine = new BattleEngine(
                         config.getPlayer(),
                         config.getLevel().getInitialEnemies(),
