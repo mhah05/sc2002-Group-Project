@@ -6,6 +6,7 @@ import ui.GameUI;
 import actions.Action;
 import combatants.Combatant;
 import combatants.Player;
+import actions.SpecialSkill
 
 public class PowerStone extends AbstractItem{
 
