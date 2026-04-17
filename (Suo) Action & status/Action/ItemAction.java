@@ -31,8 +31,8 @@ public class ItemAction extends AbstractAction {
     public void execute(Combatant user, List<Combatant> target) {
         //check available
         if (selectedItem == null) return;
-        if (item.isConsumed()) {
-            System.out.println(item.getName() + " is already used up!");
+        if (selectedItem.isConsumed()) {
+            System.out.println(selectedItem.getName() + " is already used up!");
             return;
         }
         //decide item to use
