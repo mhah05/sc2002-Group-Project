@@ -36,7 +36,7 @@ public class ItemAction extends AbstractAction {
             return;
         }
         //decide item to use
-        System.out.println(user.getName() + " → Item → " + selectedItem.getName + " used:");
+        System.out.println(user.getName() + " → Item → " + selectedItem.getName() + " used:");
         selectedItem.use(user,this.allTargets,this.savedUI);
     }
 }
