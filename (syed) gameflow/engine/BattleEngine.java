@@ -5,6 +5,7 @@ import combatants.Player;
 import combatants.Enemy;
 import ui.GameUI;
 import actions.Action;
+import actions.SpecialSkill;
 import statuseffects.StatusEffect;
 import java.util.ArrayList;
 import java.util.List;
