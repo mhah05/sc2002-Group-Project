@@ -19,7 +19,7 @@ public class ItemAction extends AbstractAction {
         
         List<Combatant> targets = new ArrayList<>();
         Player player = (Player) user;
-        List<Item> items = player.getItems();
+        List<Item> items = player.getAvailableItems();
         if (items.isEmpty()) {
             System.out.println("No available items!");
             return targets;
