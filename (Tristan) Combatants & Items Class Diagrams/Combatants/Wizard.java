@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import actions.ArcaneBlast;
 import actions.BasicAttack;
+import actions.ItemAction;
 import actions.Defend;
 import actions.Action;
 
