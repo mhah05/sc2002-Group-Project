@@ -11,7 +11,7 @@ public class ItemAction extends AbstractAction {
     private GameUI savedUI;
     
     public ItemAction() {
-        super(item.getName());
+        super();
     }
     public List<Combatant> getTargets(Combatant user, List<Combatant> allTargets, GameUI ui){
         this.allTargets = allTargets;
