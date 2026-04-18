@@ -2,69 +2,51 @@
 
 # SC2002 Turn-Based Combat Arena
 
-## Naming Conventions
+This is a Java-based turn-based combat game developed as part of the SC2002 Object-Oriented Design & Programming project.
 
-All code in this project follows standard Java naming conventions:
+The game allows players to select a character class, choose a level, and engage in battle against enemies using actions, items, and special skills.
 
-| Type | Convention | Example |
-|---|---|---|
-| Classes | PascalCase | `BattleEngine`, `Combatant`, `SmokeBomb` |
-| Interfaces | PascalCase | `Action`, `StatusEffect`, `GameUI` |
-| Abstract Classes | PascalCase | `AbstractItem`, `AbstractAction` |
-| Methods | camelCase | `takeDamage()`, `getAvailableActions()` |
-| Variables | camelCase | `currentHp`, `specialSkillCooldown` |
-| Constants | UPPER_CASE | `MAX_HP`, `BASE_ATTACK` |
-| Packages | lowercase | `engine`, `domain`, `ui` ||
+## Features
 
-## Responsibility Map
+- Multiple player classes (Warrior, Wizard)
+- Turn-based combat system with speed-based ordering
+- Action system (Basic Attack, Defend, Special Skills, Item usage)
+- Status effects (Stun, Defend, Smoke Bomb)
+- Inventory system with consumable items
+- Multiple levels with enemy waves and backup spawn logic
+- Console-based user interface
 
-| Class/Interface | Type | Responsibility |
-|---|---|---|
-| `BattleEngine` | Class | Runs the battle - handles rounds, turns, and checks if the game is over |
-| `GameUI` | Interface | Defines what the UI must be able to show and ask |
-| `ConsoleUI` | Class | The actual CLI that prints to screen and reads player input |
-| `TurnOrderStrategy` | Interface | Defines how turn order is decided each round |
-| `SpeedBasedOrder` | Class | Orders combatants by speed, fastest goes first |
-| `Combatant` | Abstract Class | Base for every fighter in the game - holds HP, stats, and status effects |
-| `Player` | Abstract Class | Adds player stuff like items and special skill cooldown |
-| `Enemy` | Abstract Class | Base for all enemies, currently always does BasicAttack |
-| `Warrior` | Class | High HP and defense player, uses Shield Bash to stun enemies |
-| `Wizard` | Class | High attack but low HP player, uses Arcane Blast to hit all enemies and gain attack |
-| `Goblin` | Class | Weak enemy, slow but balanced stats |
-| `Wolf` | Class | Fast enemy, high attack but low defense |
-| `Action` | Interface | Defines what an action needs to do |
-| `PlayerAction` | Interface | Same as Action but specifically for player-only actions |
-| `AbstractAction` | Abstract Class | Holds the name shared by all actions |
-| `BasicAttack` | Class | Hits one target, damage is ATK minus DEF |
-| `Defend` | Class | Boosts defense for 2 turns |
-| `ItemAction` | Class | Uses one of the player's items |
-| `SpecialSkill` | Class | Triggers the player's special ability |
-| `StatusEffect` | Interface | Defines what a status effect needs to do |
-| `AbstractStatusEffect` | Abstract Class | Holds name and duration shared by all effects |
-| `StunEffect` | Class | Stops the target from acting for 2 turns |
-| `DefendEffect` | Class | Adds 10 defense for 2 turns |
-| `SmokeBombEffect` | Class | Blocks all enemy damage for 2 turns |
-| `ArcaneBlastEffect` | Class | Gives Wizard +10 ATK for each enemy killed by Arcane Blast |
-| `Item` | Interface | Defines what every item needs to do |
-| `AbstractItem` | Abstract Class | Tracks name and whether the item has been used |
-| `Potion` | Class | Heals 100 HP |
-| `PowerStone` | Class | Uses special skill for free without touching the cooldown |
-| `SmokeBomb` | Class | Blocks enemy attacks for 2 turns |
-| `Level` | Class | Stores which enemies spawn and whether there's a backup wave |
-| `GameConfig` | Class | Stores what the player picked at the start - character, level, items |
+## Project Structure
 
-## Key Attributes and Methods
+The project is organized into the following packages:
 
-| Class | Key Attributes | Key Methods |
-|---|---|---|
-| `Combatant` | `name`, `maxHp`, `currentHp`, `attack`, `defense`, `speed`, `statusEffects` | `takeDamage()`, `heal()`, `isAlive()`, `addStatusEffect()`, `removeExpiredEffects()` |
-| `Player` | `items`, `specialSkillCooldown` | `canUseSpecialSkill()`, `resetCooldown()`, `tickCooldown()`, `useSpecialSkill()` |
-| `Enemy` | — | `getAvailableActions()` |
-| `Warrior` | — | `getAvailableActions()`, `useSpecialSkill()` |
-| `Wizard` | — | `getAvailableActions()`, `useSpecialSkill()` |
-| `BattleEngine` | `player`, `enemies`, `turnOrderStrategy`, `ui` | `startBattle()`, `processTurn()`, `isGameOver()`, `getWinner()` |
-| `AbstractItem` | `name`, `consumed` | `getName()`, `isConsumed()`, `markConsumed()` |
-| `AbstractStatusEffect` | `name`, `duration` | `getName()`, `isExpired()`, `decrementDuration()` |
-| `AbstractAction` | `name` | `getName()` |
-| `Level` | `levelNumber`, `difficulty`, `initialEnemies`, `backupEnemies` | `getInitialEnemies()`, `getBackupEnemies()`, `hasBackupSpawn()` |
-| `GameConfig` | `selectedPlayer`, `selectedLevel`, `selectedItems` | `getPlayer()`, `getLevel()`, `getItems()` |
+- `combatants` – Player and enemy classes
+- `actions` – All combat actions and skills
+- `items` – Consumable items
+- `statuseffects` – Buffs and debuffs applied during battle
+- `engine` – Core game logic (BattleEngine, Level, TurnOrderStrategy)
+- `ui` – User interface (ConsoleUI)
+
+Refer to the UML diagrams in `/diagrams` for detailed class relationships.
+
+## How to Run
+
+1. Open the project in an IDE (e.g., IntelliJ or VS Code)
+2. Navigate to:
+   ui.ConsoleUI
+3. Run the `main` method
+
+The game will start in the console.
+
+## Gameplay Flow
+
+1. Player selects a class (Warrior / Wizard)
+2. Player selects a level
+3. Player chooses starting items
+4. Battle begins:
+   - Turn order is determined by speed
+   - Player selects actions (attack, defend, item, special skill)
+   - Enemies act automatically
+5. Game ends when:
+   - Player defeats all enemies (Victory)
+   - Player HP reaches 0 (Defeat)
