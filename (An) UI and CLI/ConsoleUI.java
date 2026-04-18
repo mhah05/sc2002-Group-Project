@@ -4,23 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import items.ItemFactory;
 import items.ItemType;
-import combatants.Enemy;
-import combatants.Goblin;
-import combatants.Player;
-import combatants.Warrior;
-import combatants.Wizard;
-import combatants.Wolf;
-import engine.BattleEngine;
-import engine.GameConfig;
 import items.Item;
-import items.Potion;
-import items.PowerStone;
-import items.SmokeBomb;
+import engine.GameController;
 import engine.GameStats;
-import engine.Level;
-import engine.SpeedBasedOrder;
 
 public class ConsoleUI implements GameUI {
 
@@ -53,11 +40,14 @@ public class ConsoleUI implements GameUI {
     }
 
     @Override
-    public void displayBattleStatus(List combatants) {
+    public void displayBattleStatus(List<combatants.Combatant> combatants) {
         System.out.println("Battle Status:");
-        for (Object obj : combatants) {
-            combatants.Combatant c = (combatants.Combatant) obj;
-            System.out.println("- " + c.getName() + " HP: " + c.getCurrentHp() + "/" + c.getMaxHp());
+        for (combatants.Combatant c : combatants) {
+            if (c.isAlive()) {
+                System.out.println("- " + c.getName() + " HP: " + c.getCurrentHp() + "/" + c.getMaxHp());
+            } else {
+                System.out.println("- " + c.getName() + " ELIMINATED");
+            }
         }
     }
 
@@ -80,33 +70,31 @@ public class ConsoleUI implements GameUI {
     }
 
     @Override
-    public actions.Action getPlayerAction(List actions) {
+    public actions.Action getPlayerAction(List<actions.Action> actions) {
         System.out.println("Choose an action:");
-        List<actions.Action> actionList = (List<actions.Action>) actions;
-        displayLegalActions(actionList);
-        int choice = readChoice(1, actionList.size());
-        return actionList.get(choice - 1);
+        displayLegalActions(actions);
+        int choice = readChoice(1, actions.size());
+        return actions.get(choice - 1);
     }
 
     @Override
-    public combatants.Combatant getPlayerTarget(List targets) {
+    public combatants.Combatant getPlayerTarget(List<combatants.Combatant> targets) {
         System.out.println("Choose a target:");
-        List<combatants.Combatant> targetList = (List<combatants.Combatant>) targets;
-        displayTargets(targetList);
-        int choice = readChoice(1, targetList.size());
-        return targetList.get(choice - 1);
+        displayTargets(targets);
+        int choice = readChoice(1, targets.size());
+        return targets.get(choice - 1);
     }
 
     @Override
-    public items.Item getPlayerItem(List items) {
+    public items.Item getPlayerItem(List<items.Item> items) {
         System.out.println("Choose an item:");
-        List<items.Item> itemList = (List<items.Item>) items;
-        displayItems(itemList);
-        int choice = readChoice(1, itemList.size());
-        return itemList.get(choice - 1);
+        displayItems(items);
+        int choice = readChoice(1, items.size());
+        return items.get(choice - 1);
     }
 
-    public boolean userExit() {
+    @Override
+    public boolean confirmExit() {
         while (true) {
             System.out.println("Are you sure you want to exit? y for YES, n for NO.");
             String userInput = scanner.nextLine().trim().toLowerCase();
@@ -124,21 +112,35 @@ public class ConsoleUI implements GameUI {
 
     @Override
     public void displayVictory(GameStats stats) {
-        System.out.println("Victory!");
-        System.out.println("Rounds: " + stats.getTotalRounds());
-        System.out.println("HP Remaining: " + stats.getRemainingHp() + "/" + stats.getMaxHp());
+        System.out.println("Congratulations, you have defeated all your enemies.");
+        System.out.println("Statistics: Remaining HP: " + stats.getRemainingHp() + "/" + stats.getMaxHp()
+            + " | Total Rounds: " + stats.getTotalRounds());
     }
 
     @Override
     public void displayDefeat(GameStats stats) {
-        System.out.println("Defeat.");
-        System.out.println("Rounds: " + stats.getTotalRounds());
-        System.out.println("Enemies remaining: " + stats.getEnemiesRemaining());
+        System.out.println("Defeated. Don't give up, try again!");
+        System.out.println("Statistics: Enemies remaining: " + stats.getEnemiesRemaining()
+            + " | Total Rounds Survived: " + stats.getTotalRounds());
     }
 
     @Override
     public void showOpeningScene() {
-        System.out.println("Welcome to ");
+        System.out.println("""
+        WELCOME TO THE GAME!
+        Loading Screen...
+        - Choose your PLAYER:
+          Warrior  HP 260 | ATK 40 | DEF 20 | SPD 30
+          Wizard   HP 200 | ATK 50 | DEF 10 | SPD 20
+        - Know your ENEMY:
+          Goblin   HP 55 | ATK 35 | DEF 15 | SPD 25
+          Wolf     HP 40 | ATK 45 | DEF 5  | SPD 35
+        - Difficulties: Easy, Medium, Hard
+          Easy   (Level 1): Initial 3 Goblins
+          Medium (Level 2): Initial 1 Goblin + 1 Wolf, Backup 2 Wolves
+          Hard   (Level 3): Initial 2 Goblins, Backup 1 Goblin + 2 Wolves
+        - Pick your class, items, and difficulty in setup.
+        """);
         System.out.println();
     }
 
@@ -154,8 +156,8 @@ public class ConsoleUI implements GameUI {
     @Override
     public String choosePlayerClass() {
         System.out.println("Choose your player:");
-        System.out.println("1. Warrior (High HP/DEF, Shield Bash)");
-        System.out.println("2. Wizard  (High ATK, Arcane Blast)");
+        System.out.println("1. Warrior (High HP/DEF, Special Skill: Shield Bash)");
+        System.out.println("2. Wizard  (High ATK, Special Skill: Arcane Blast)");
         int choice = readChoice(1, 2);
         return choice == 1 ? "Warrior" : "Wizard";
     }
@@ -193,16 +195,15 @@ public class ConsoleUI implements GameUI {
 
 
     @Override
-    public boolean confirmStart(String playerClass, int level, List items) {
-        List<items.Item> typedItems = (List<items.Item>) items;
+    public boolean confirmStart(String playerClass, int level, List<items.Item> items) {
         System.out.println();
-        System.out.println("Confirm setup");
+        System.out.println("Confirm setup...");
         System.out.println("Player: " + playerClass);
         System.out.println("Level : " + level);
-        System.out.println("Items : " + (typedItems == null ? 0 : typedItems.size()));
+        System.out.println("Items : " + (items == null ? 0 : items.size()));
 
-        if (typedItems != null) {
-            for (items.Item item : typedItems) {
+        if (items != null) {
+            for (items.Item item : items) {
                 System.out.println("- " + item.getName());
             }
         }
@@ -220,103 +221,23 @@ public class ConsoleUI implements GameUI {
         scanner.nextLine();
     }
 
-    private void showHowToPlay() {
-        System.out.println("How To Play");
-        System.out.println("- Pick a class and level.");
-        System.out.println("- Each round, choose an action.");
-        System.out.println("- Defeat all enemies to win.");
+    @Override
+    public void showHowToPlay() {
+        System.out.println("""
+                HOW TO PLAY
+
+                During Gameplay
+                - Defeat your enemies using different action!
+
+                Win / Lose Conditions
+                - Defeat all enemies to win.
+                - If your HP reaches 0, you lose.
+                - Good luck!
+                """);
     }
-
-    private GameConfig initializeGameConfig() {
-        String playerClass = choosePlayerClass();
-        int levelNumber = chooseLevel(1, 3);
-        List<ItemType> selectedTypes = chooseStartingItemTypes(getDefaultItemTypes(), 2);
-        List<Item> selectedItems = buildItemsFromTypes(selectedTypes);
-        if (!confirmStart(playerClass, levelNumber, selectedItems)) {
-            return null;
-        }
-
-        Player player = "Warrior".equalsIgnoreCase(playerClass) ? new Warrior() : new Wizard();
-        Level level = buildLevel(levelNumber);
-
-        return new GameConfig(player, level, selectedItems);
-
-    }
-
-    private List<ItemType> getDefaultItemTypes() {
-    return List.of(ItemType.POTION, ItemType.SMOKE_BOMB, ItemType.POWER_STONE);
-}
-
-    private List<Item> buildItemsFromTypes(List<ItemType> selectedTypes) {
-        List<Item> items = new ArrayList<>();
-        for (ItemType type : selectedTypes) {
-            items.add(ItemFactory.create(type)); 
-        }
-        return items;
-    }
-
-
-    private Level buildLevel(int levelNumber) {
-        Level level = new Level(levelNumber, "Normal");
-        List<Enemy> initialEnemies = new ArrayList<>();
-        List<Enemy> backupEnemies = new ArrayList<>();
-
-        if (levelNumber == 1) {
-            initialEnemies.add(new Goblin());
-            initialEnemies.add(new Wolf());
-        } else if (levelNumber == 2) {
-            initialEnemies.add(new Goblin());
-            initialEnemies.add(new Goblin());
-            initialEnemies.add(new Wolf());
-            backupEnemies.add(new Wolf());
-        } else {
-            initialEnemies.add(new Wolf());
-            initialEnemies.add(new Wolf());
-            initialEnemies.add(new Goblin());
-            backupEnemies.add(new Goblin());
-            backupEnemies.add(new Wolf());
-        }
-
-        level.setInitialEnemies(initialEnemies);
-        level.setBackupEnemies(backupEnemies);
-        return level;
-    }
-
     public static void main(String[] args) {
         ConsoleUI ui = new ConsoleUI();
-        ui.showOpeningScene();
-
-        boolean running = true;
-        while (running) {
-            int menuChoice = ui.showMainMenu();
-            if (menuChoice == 1) {
-                GameConfig config = ui.initializeGameConfig();
-                if (config == null) {
-                    ui.displayMessage("Setup cancelled. Returning to main menu.");
-                    continue;
-                }
-
-                for (items.Item item : config.getItems()) {
-                    config.getPlayer().addItem(item);
-                }
-                     
-                BattleEngine engine = new BattleEngine(
-                        config.getPlayer(),
-                        config.getLevel().getInitialEnemies(),
-                        new SpeedBasedOrder(),
-                        ui,
-                        config.getLevel()
-                );
-                engine.startBattle();
-                ui.waitForEnter();
-            } else if (menuChoice == 2) {
-                ui.showHowToPlay();
-                ui.waitForEnter();
-            } else {
-                running = !ui.userExit();
-            }
-        }
-
-        ui.displayMessage("Thanks for playing.");
+        GameController controller = new GameController(ui);
+        controller.start();
     }
 }

@@ -6,13 +6,13 @@ import engine.GameStats;
 
 public interface GameUI {
     void displayMessage(String message);
-    void displayBattleStatus(List combatants);
+    void displayBattleStatus(List<combatants.Combatant> combatants);
 
     int readChoice(int min, int max);
 
-    actions.Action getPlayerAction(List actions);
-    combatants.Combatant getPlayerTarget(List targets);
-    items.Item getPlayerItem(List items);
+    actions.Action getPlayerAction(List<actions.Action> actions);
+    combatants.Combatant getPlayerTarget(List<combatants.Combatant> targets);
+    items.Item getPlayerItem(List<items.Item> items);
 
     void displayVictory(GameStats stats);
     void displayDefeat(GameStats stats);
@@ -26,6 +26,8 @@ public interface GameUI {
         java.util.List<items.ItemType> availableTypes,
         int maxChoices
     );
-    boolean confirmStart(String playerClass, int level, List items);
+    boolean confirmStart(String playerClass, int level, List<items.Item> items);
+    void showHowToPlay();
+    boolean confirmExit();
     void waitForEnter();
 }
