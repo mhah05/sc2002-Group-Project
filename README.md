@@ -2,8 +2,7 @@
 
 # SC2002 Turn-Based Combat Arena
 
-This is a Java-based turn-based combat game developed as part of the SC2002 Object-Oriented Design & Programming project.
-
+This is a Java-based turn-based combat game.
 The game allows players to select a character class, choose a level, and engage in battle against enemies using actions, items, and special skills.
 
 ## Features
