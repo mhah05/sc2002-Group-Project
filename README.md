@@ -1,4 +1,4 @@
-# sc2002-Group-Project
+# SC2002-Group-Project
 
 # SC2002 Turn-Based Combat Arena
 
