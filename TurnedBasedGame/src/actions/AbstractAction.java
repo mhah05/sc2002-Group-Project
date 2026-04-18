@@ -1,0 +1,17 @@
+package actions;
+import java.util.List;
+import combatants.Combatant;
+import ui.GameUI;
+public abstract class AbstractAction implements Action {
+    protected String name;
+
+    public AbstractAction(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public abstract void execute(Combatant user, List<Combatant> targets);
+    public abstract List<Combatant> getTargets(Combatant user, List<Combatant> target, GameUI ui);
+
+}
