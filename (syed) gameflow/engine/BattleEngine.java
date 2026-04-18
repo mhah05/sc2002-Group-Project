@@ -3,6 +3,8 @@ package engine;
 import combatants.Combatant;
 import combatants.Player;
 import combatants.Enemy;
+import combatants.EnemyFactory;
+import combatants.EnemyType;
 import ui.GameUI;
 import actions.Action;
 import actions.SpecialSkill;
@@ -18,7 +20,7 @@ import java.util.List;
  * This is to demonstrate DIP throughout.
  */
 
-public class BattleEngine 
+	public class BattleEngine 
 {
 	private Player player;
 	private List<Enemy> enemies;
@@ -46,6 +48,47 @@ public class BattleEngine
 	{
 		this(player, enemies, turnOrderStrategy, ui);
 		this.currentLevel = currentLevel;
+	}
+
+	public static Level buildLevelFromAssignment(int levelNumber)
+	{
+		String difficulty = levelNumber == 1 ? "Easy" : (levelNumber == 2 ? "Medium" : "Hard");
+		Level level = new Level(levelNumber, difficulty);
+		List<Enemy> initialEnemies = new ArrayList<>();
+		List<Enemy> backupEnemies = new ArrayList<>();
+
+		if (levelNumber == 1)
+		{
+			// Easy: Initial Spawn 3 Goblins
+			initialEnemies.add(EnemyFactory.create(EnemyType.GOBLIN));
+			initialEnemies.add(EnemyFactory.create(EnemyType.GOBLIN));
+			initialEnemies.add(EnemyFactory.create(EnemyType.GOBLIN));
+		}
+		else if (levelNumber == 2)
+		{
+			// Medium: Initial Spawn 1 Goblin + 1 Wolf; Backup Spawn 2 Wolf
+			initialEnemies.add(EnemyFactory.create(EnemyType.GOBLIN));
+			initialEnemies.add(EnemyFactory.create(EnemyType.WOLF));
+			backupEnemies.add(EnemyFactory.create(EnemyType.WOLF));
+			backupEnemies.add(EnemyFactory.create(EnemyType.WOLF));
+		}
+		else if (levelNumber == 3)
+		{
+			// Hard: Initial Spawn 2 Goblins; Backup Spawn 1 Goblin + 2 Wolf
+			initialEnemies.add(EnemyFactory.create(EnemyType.GOBLIN));
+			initialEnemies.add(EnemyFactory.create(EnemyType.GOBLIN));
+			backupEnemies.add(EnemyFactory.create(EnemyType.GOBLIN));
+			backupEnemies.add(EnemyFactory.create(EnemyType.WOLF));
+			backupEnemies.add(EnemyFactory.create(EnemyType.WOLF));
+		}
+		else
+		{
+			throw new IllegalArgumentException("Invalid level number: " + levelNumber);
+		}
+
+		level.setInitialEnemies(initialEnemies);
+		level.setBackupEnemies(backupEnemies);
+		return level;
 	}
 	
 	
