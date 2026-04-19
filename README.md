@@ -51,8 +51,8 @@ The game will start in the console.
    - Player HP reaches 0 (Defeat)
 
 ## Project Members
-mhah05 - Surapalli Venkatamahalaxmi
-TrizzyTurtle - Tristan Wei Xiang Mota
-Qvs5234 - Suo Jianpeng
-Vu Nguyen Thuy An - Vu Nguyen Thuy An
-msyed0310 - Syed Muhammad Bin Syed Alwi Alattas
+1. mhah05 - Surapalli Venkatamahalaxmi
+2. TrizzyTurtle - Tristan Wei Xiang Mota
+3. Qvs5234 - Suo Jianpeng
+4. Vu Nguyen Thuy An - Vu Nguyen Thuy An
+5. msyed0310 - Syed Muhammad Bin Syed Alwi Alattas
