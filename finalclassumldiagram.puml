@@ -1,0 +1,429 @@
+@startuml sc2002_class_diagram
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam groupInheritance 2
+
+skinparam class {
+    BackgroundColor White
+    BorderColor #444
+    ArrowColor #444
+    FontName Arial
+    HeaderBackgroundColor #D6E4F0
+}
+skinparam package {
+    BorderColor #888
+    FontStyle bold
+}
+
+' ====================================================
+' ROW 1: engine (left) | ui (right)
+' ====================================================
+together {
+    package "«Engine Layer»  engine" #EAF7EF {
+        together {
+            class GameController {
+                - ui: GameUI
+                - running: boolean
+                ..
+                + GameController(ui: GameUI)
+                + start(): void
+                - runNewGameFlow(): void
+                - initializeGameConfig(): GameConfig
+                - createGameConfig(cls, lvl, types): GameConfig
+                - runBattle(config: GameConfig): void
+                - showCompletionMenu(): int
+                - buildItemsFromTypes(types: List<ItemType>): List<Item>
+                - extractItemTypes(items: List<Item>): List<ItemType>
+            }
+            class GameConfig {
+                - selectedPlayer: Player
+                - selectedLevel: Level
+                - selectedItems: List<Item>
+                ..
+                + getPlayer(): Player
+                + getLevel(): Level
+                + getItems(): List<Item>
+            }
+            class GameStats {
+                - remainingHp: int
+                - maxHp: int
+                - totalRounds: int
+                - enemiesRemaining: int
+                ..
+                + getRemainingHp(): int
+                + getMaxHp(): int
+                + getTotalRounds(): int
+                + getEnemiesRemaining(): int
+            }
+        }
+        together {
+            class BattleEngine {
+                - player: Player
+                - enemies: List<Enemy>
+                - turnOrderStrategy: TurnOrderStrategy
+                - ui: GameUI
+                - roundNumber: int
+                - backupSpawned: boolean
+                - currentLevel: Level
+                ..
+                + startBattle(): void
+                + processTurn(c: Combatant): void
+                + isGameOver(): boolean
+                + getWinner(): String
+                + {static} buildLevelFromAssignment(n: int): Level
+                - playerTurn(p: Player): void
+                - enemyTurn(e: Combatant): void
+                - checkBackupSpawn(): void
+                - isStunned(c: Combatant): boolean
+            }
+            class Level {
+                - levelNumber: int
+                - difficulty: String
+                - initialEnemies: List<Enemy>
+                - backupEnemies: List<Enemy>
+                ..
+                + getLevelNumber(): int
+                + getDifficulty(): String
+                + getInitialEnemies(): List<Enemy>
+                + getBackupEnemies(): List<Enemy>
+                + hasBackupSpawn(): boolean
+                + setInitialEnemies(e: List<Enemy>): void
+                + setBackupEnemies(e: List<Enemy>): void
+            }
+            interface TurnOrderStrategy {
+                + determineTurnOrder(combatants: List<Combatant>): List<Combatant>
+            }
+            class SpeedBasedOrder {
+                + determineTurnOrder(combatants: List<Combatant>): List<Combatant>
+            }
+        }
+
+        SpeedBasedOrder ..|> TurnOrderStrategy
+        GameController --> BattleEngine 
+        GameController --> GameConfig
+        BattleEngine o--> TurnOrderStrategy
+        BattleEngine --> Level
+        BattleEngine --> GameStats 
+        GameConfig --> Level
+    }
+
+    package "«UI Layer»  ui" #EAF4FB {
+        interface GameUI {
+            + displayMessage(msg: String): void
+            + displayBattleStatus(combatants: List<Combatant>): void
+            + readChoice(min: int, max: int): int
+            + getPlayerAction(actions: List<Action>): Action
+            + getPlayerTarget(targets: List<Combatant>): Combatant
+            + getPlayerItem(items: List<Item>): Item
+            + displayVictory(stats: GameStats): void
+            + displayDefeat(stats: GameStats): void
+            + showOpeningScene(): void
+            + showMainMenu(): int
+            + choosePlayerClass(): String
+            + chooseLevel(min: int, max: int): int
+            + chooseStartingItemTypes(available: List<ItemType>, max: int): List<ItemType>
+            + confirmStart(cls: String, lvl: int, items: List<Item>): boolean
+            + showHowToPlay(): void
+            + confirmExit(): boolean
+            + waitForEnter(): void
+        }
+        class ConsoleUI {
+            - scanner: Scanner
+            ..
+            + readChoice(min: int, max: int): int
+            + displayMessage(msg: String): void
+            + displayBattleStatus(combatants: List<Combatant>): void
+            + getPlayerAction(actions: List<Action>): Action
+            + getPlayerTarget(targets: List<Combatant>): Combatant
+            + getPlayerItem(items: List<Item>): Item
+            + displayVictory(stats: GameStats): void
+            + displayDefeat(stats: GameStats): void
+            + showOpeningScene(): void
+            + showMainMenu(): int
+            + choosePlayerClass(): String
+            + chooseLevel(min: int, max: int): int
+            + chooseStartingItemTypes(available: List<ItemType>, max: int): List<ItemType>
+            + confirmStart(cls: String, lvl: int, items: List<Item>): boolean
+            + showHowToPlay(): void
+            + confirmExit(): boolean
+            + waitForEnter(): void
+            + {static} main(args: String[]): void
+        }
+        ConsoleUI ..|> GameUI
+    }
+}
+
+' ====================================================
+' ROW 2: actions (left) | statuseffects (right)
+' ====================================================
+together {
+    package "«Domain»  actions" #FFF3E0 {
+        together {
+            interface Action {
+                + execute(user: Combatant, targets: List<Combatant>): void
+                + getName(): String
+                + getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+            abstract class AbstractAction {
+                # name: String
+                ..
+                + getName(): String
+                + {abstract} execute(user: Combatant, targets: List<Combatant>): void
+                + {abstract} getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+            abstract class SpecialSkill {
+                + SpecialSkill(name: String)
+                + {abstract} getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+        }
+        together {
+            class BasicAttack {
+                + BasicAttack()
+                + execute(user: Combatant, targets: List<Combatant>): void
+                + getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+            class Defend {
+                + Defend()
+                + execute(user: Combatant, targets: List<Combatant>): void
+                + getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+            class ItemAction {
+                - selectedItem: Item
+                - savedUI: GameUI
+                ..
+                + ItemAction()
+                + execute(user: Combatant, targets: List<Combatant>): void
+                + getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+            class ShieldBash {
+                + ShieldBash()
+                + execute(user: Combatant, targets: List<Combatant>): void
+                + getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+            class ArcaneBlast {
+                + ArcaneBlast()
+                + execute(user: Combatant, targets: List<Combatant>): void
+                + getTargets(user: Combatant, all: List<Combatant>, ui: GameUI): List<Combatant>
+            }
+        }
+
+        AbstractAction ..|> Action
+        SpecialSkill --|> AbstractAction
+        BasicAttack --|> AbstractAction
+        Defend --|> AbstractAction
+        ItemAction --|> AbstractAction
+        ShieldBash --|> SpecialSkill
+        ArcaneBlast --|> SpecialSkill
+    }
+
+    package "«Domain»  statuseffects" #F3E5F5 {
+        together {
+            interface StatusEffect {
+                + apply(target: Combatant): void
+                + isExpired(): boolean
+                + getName(): String
+                + decrementDuration(): void
+            }
+            abstract class AbstractStatusEffect {
+                - name: String
+                - duration: int
+                ..
+                + getName(): String
+                + isExpired(): boolean
+                + decrementDuration(): void
+                + apply(target: Combatant): void
+            }
+        }
+        together {
+            class DefendEffect {
+                + DefendEffect()
+                + apply(target: Combatant): void
+            }
+            class StunEffect {
+                + StunEffect()
+                + apply(target: Combatant): void
+            }
+            class SmokeBombEffect {
+                + SmokeBombEffect()
+                + apply(target: Combatant): void
+            }
+        }
+
+        AbstractStatusEffect ..|> StatusEffect
+        DefendEffect --|> AbstractStatusEffect
+        StunEffect --|> AbstractStatusEffect
+        SmokeBombEffect --|> AbstractStatusEffect
+    }
+}
+
+' ====================================================
+' ROW 3: combatants (left) | items (right)
+' ====================================================
+together {
+    package "«Domain»  combatants" #FFF8E1 {
+        together {
+            abstract class Combatant {
+                - name: String
+                - maxHp: int
+                - currentHp: int
+                - attack: int
+                - defence: int
+                - speed: int
+                - statusEffects: List<StatusEffect>
+                ..
+                + getName(): String
+                + getAttack(): String
+                + getSpeed(): int
+                + getCurrentHp(): int
+                + getMaxHp(): int
+                + setAttack(v: int): void
+                + takeDamage(raw: int): void
+                + heal(amount: int): void
+                + isAlive(): boolean
+                + addStatusEffect(e: StatusEffect): void
+                + updateStatusEffects(): void
+                + {abstract} getAvailableActions(): List<Action>
+            }
+            abstract class Player {
+                - items: List<Item>
+                - specialSkillCooldown: int
+                ..
+                + canUseSpecialSkill(): boolean
+                + resetCooldown(): void
+                + tickCooldown(): void
+                + addItem(item: Item): void
+                + getAvailableItems(): List<Item>
+                + {abstract} getSpecialSkill(): Action
+                + {abstract} getAvailableActions(): List<Action>
+            }
+            abstract class Enemy {
+                # Enemy(name, maxHp, attack, defence, speed)
+                ..
+                + {abstract} getAvailableActions(): List<Action>
+            }
+        }
+        together {
+            class Warrior {
+                + Warrior()
+                + getSpecialSkill(): Action
+                + getAvailableActions(): List<Action>
+            }
+            class Wizard {
+                + Wizard()
+                + getSpecialSkill(): Action
+                + getAvailableActions(): List<Action>
+            }
+            class Goblin {
+                + Goblin()
+                + getAvailableActions(): List<Action>
+            }
+            class Wolf {
+                + Wolf()
+                + getAvailableActions(): List<Action>
+            }
+            class EnemyFactory {
+                - EnemyFactory()
+                ..
+                + {static} create(type: EnemyType): Enemy
+            }
+            enum EnemyType <<enumeration>> {
+                GOBLIN
+                WOLF
+                --
+                + getLabel(): String
+            }
+        }
+
+        Player --|> Combatant
+        Enemy --|> Combatant
+        Warrior --|> Player
+        Wizard --|> Player
+        Goblin --|> Enemy
+        Wolf --|> Enemy
+        EnemyFactory ..> Enemy 
+        EnemyFactory ..> EnemyType 
+    }
+
+    package "«Domain»  items" #FCE4EC {
+        together {
+            interface Item {
+                + getName(): String
+                + use(user: Combatant, all: List<Combatant>, ui: GameUI): void
+                + isConsumed(): boolean
+            }
+            abstract class AbstractItem {
+                - name: String
+                - consumed: boolean
+                ..
+                + getName(): String
+                + isConsumed(): boolean
+                # markConsumed(): void
+                + {abstract} use(user: Combatant, all: List<Combatant>, ui: GameUI): void
+            }
+        }
+        together {
+            class Potion {
+                + Potion()
+                + use(user: Combatant, all: List<Combatant>, ui: GameUI): void
+            }
+            class SmokeBomb {
+                + SmokeBomb()
+                + use(user: Combatant, all: List<Combatant>, ui: GameUI): void
+            }
+            class PowerStone {
+                + PowerStone()
+                + use(user: Combatant, all: List<Combatant>, ui: GameUI): void
+            }
+            class ItemFactory {
+                - ItemFactory()
+                ..
+                + {static} create(type: ItemType): Item
+            }
+            enum ItemType <<enumeration>> {
+                POTION
+                SMOKE_BOMB
+                POWER_STONE
+                --
+                + getLabel(): String
+            }
+        }
+
+        AbstractItem ..|> Item
+        Potion --|> AbstractItem
+        SmokeBomb --|> AbstractItem
+        PowerStone --|> AbstractItem
+        ItemFactory ..> Item 
+        ItemFactory ..> ItemType 
+    }
+}
+
+' ====================================================
+' HIDDEN LINKS TO FORCE ROW STACKING (the key technique)
+' ====================================================
+GameController -[hidden]d- Action
+Action -[hidden]d- Combatant
+
+' ====================================================
+' CROSS-LAYER RELATIONSHIPS
+' ====================================================
+GameController o--> GameUI
+BattleEngine o--> GameUI
+BattleEngine o--> Player
+BattleEngine o--> Enemy
+GameConfig --> Player
+
+Combatant --> Action 
+Combatant --> StatusEffect 
+Player "1" o--> "0..*" Item
+
+Defend ..> DefendEffect 
+ShieldBash ..> StunEffect 
+SmokeBomb ..> SmokeBombEffect 
+ItemAction o--> GameUI
+
+
+
+@enduml
