@@ -32,7 +32,7 @@ Refer to the UML diagrams in `/diagrams` for detailed class relationships.
 
 1. Open the project in an IDE (e.g., IntelliJ or VS Code)
 2. Navigate to:
-  ConsoleUI.java
+  TurnbasedGame/src/ui/ConsoleUI.java
 3. Run the `main` method
 
 The game will start in the console.
