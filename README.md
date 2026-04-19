@@ -49,3 +49,10 @@ The game will start in the console.
 5. Game ends when:
    - Player defeats all enemies (Victory)
    - Player HP reaches 0 (Defeat)
+
+## Project Members
+mhah05 - Surapalli Venkatamahalaxmi
+TrizzyTurtle - Tristan Wei Xiang Mota
+Qvs5234 - Suo Jianpeng
+Vu Nguyen Thuy An - Vu Nguyen Thuy An
+msyed0310 - Syed Muhammad Bin Syed Alwi Alattas
